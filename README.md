@@ -124,7 +124,7 @@ The following topics are provided:
 
 ### Acquire Data
 
-#### [capture_color_image](https://github.com/MechMindRobotics/mecheye_ros2_interface/blob/master/srv/CaptureColorImage.srv)
+#### [capture_color_image](https://github.com/MechMindRobotics/mecheye_ros2_interface/blob/master/srv/CaptureColorMap.srv)
 
 Invoke this service to acquire the 2D image.
 
@@ -269,7 +269,7 @@ Example:
 
 ### Adjust Camera Parameters
 
-> Note:  Mech-Eye SDK 2.5.0 and above provide methods according to the data types of the camera parameters, and the ROS 2 interface provides the corresponding services. To obtain or adjust the value of a camera parameter, call the service corresponding to the data type of the camera parameter and input the name of the camera parameter as the service's parameter. The data types and names of the camera parameters can be found in the header files in the installation path of Mech-Eye SDK: `/opt/mech-mind/mech-eye-sdk/include/area_scan_3d_camera/parameters/`.
+> Note:  Mech-Eye SDK 2.3.4 and above provide methods according to the data types of the camera parameters, and the ROS 2 interface provides the corresponding services. To obtain or adjust the value of a camera parameter, call the service corresponding to the data type of the camera parameter and input the name of the camera parameter as the service's parameter. The data types and names of the camera parameters can be found in the header files in the installation path of Mech-Eye SDK: `/opt/mech-mind/mech-eye-sdk/include/area_scan_3d_camera/parameters/`.
 
 The following data types of camera parameters are distinguished:
 
