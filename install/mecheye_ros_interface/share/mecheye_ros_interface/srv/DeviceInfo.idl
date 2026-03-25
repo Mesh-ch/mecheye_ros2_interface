@@ -1,0 +1,29 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mecheye_ros_interface/srv/DeviceInfo.srv
+// generated code does not contain a copyright notice
+
+
+module mecheye_ros_interface {
+  module srv {
+    struct DeviceInfo_Request {
+      uint8 structure_needs_at_least_one_member;
+    };
+    struct DeviceInfo_Response {
+      string model;
+
+      string serial_number;
+
+      string hardware_version;
+
+      string firmware_version;
+
+      string ip_address;
+
+      string subnet_mask;
+
+      string ip_assignment_method;
+
+      uint16 port;
+    };
+  };
+};

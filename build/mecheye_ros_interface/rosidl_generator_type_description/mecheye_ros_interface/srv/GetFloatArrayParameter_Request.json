@@ -1,0 +1,26 @@
+{
+  "type_description_msg": {
+    "type_description": {
+      "type_name": "mecheye_ros_interface/srv/GetFloatArrayParameter_Request",
+      "fields": [
+        {
+          "name": "name",
+          "type": {
+            "type_id": 17,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
+        }
+      ]
+    },
+    "referenced_type_descriptions": []
+  },
+  "type_hashes": [
+    {
+      "type_name": "mecheye_ros_interface/srv/GetFloatArrayParameter_Request",
+      "hash_string": "RIHS01_6a76aee436fdd9849dc0d22dd447979c37d132bd8f223a11d6a5ca55fc00c7fe"
+    }
+  ]
+}

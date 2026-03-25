@@ -1,0 +1,26 @@
+{
+  "type_description_msg": {
+    "type_description": {
+      "type_name": "mecheye_ros_interface/srv/CaptureStereoColorImages_Request",
+      "fields": [
+        {
+          "name": "structure_needs_at_least_one_member",
+          "type": {
+            "type_id": 3,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
+        }
+      ]
+    },
+    "referenced_type_descriptions": []
+  },
+  "type_hashes": [
+    {
+      "type_name": "mecheye_ros_interface/srv/CaptureStereoColorImages_Request",
+      "hash_string": "RIHS01_4785edf34b8e4108ae03ab45512976782ddc930d10b64a25cb10abf37464b02d"
+    }
+  ]
+}

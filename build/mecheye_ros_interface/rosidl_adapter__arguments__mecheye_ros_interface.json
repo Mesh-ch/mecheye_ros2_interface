@@ -1,0 +1,31 @@
+{
+  "package_name": "mecheye_ros_interface",
+  "non_idl_tuples": [
+    "/home/inauenma/git/mecheye_ros2_interface:srv/SetCurrentUserSet.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/SaveAllSettingsToUserSets.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/AddUserSet.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/CaptureColorImage.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/CaptureStereoColorImages.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/CaptureTexturedPointCloud.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/CaptureDepthMap.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/CapturePointCloud.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/DeleteUserSet.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/DeviceInfo.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/GetAllUserSets.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/GetCurrentUserSet.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/SetIntParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/GetIntParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/SetRangeParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/GetRangeParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/SetBoolParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/GetBoolParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/SetEnumParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/GetEnumParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/SetFloatParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/GetFloatParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/SetFloatArrayParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/GetFloatArrayParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/SetROIParameter.srv",
+    "/home/inauenma/git/mecheye_ros2_interface:srv/GetROIParameter.srv"
+  ]
+}

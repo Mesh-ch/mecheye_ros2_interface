@@ -1,13 +1,16 @@
+#include <MechMindCamera.h>
+
+#include <cstdio>
 #include <sstream>
+#include <unistd.h>
+
+#include <area_scan_3d_camera/api_util.h>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
-#include <std_msgs/msg/string.hpp>
-#include <area_scan_3d_camera/api_util.h>
-#include <pcl/point_cloud.h>
 #include <pcl/io/ply_io.h>
+#include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl_conversions/pcl_conversions.h>
-#include <MechMindCamera.h>
 
 namespace {
 
@@ -71,6 +74,59 @@ void convertToROSMsg(const mmind::eye::PointCloud& pointCloud, sensor_msgs::msg:
            (cloud.row_step * cloud.height));
 }
 
+bool connectCamera(mmind::eye::Camera& camera, const std::string& camera_ip)
+{
+    mmind::eye::ErrorStatus status;
+    std::vector<mmind::eye::CameraInfo> device_info_list = mmind::eye::Camera::discoverCameras();
+
+    if (!camera_ip.empty()) {
+        std::cout << "Connecting to camera at IP " << camera_ip << "..." << std::endl;
+
+        for (const auto& camera_info : device_info_list) {
+            if (camera_info.ipAddress == camera_ip) {
+                status = camera.connect(camera_info);
+                if (!status.isOK()) {
+                    showError(status);
+                    return false;
+                }
+                std::cout << "Successfully connected to the camera." << std::endl;
+                return true;
+            }
+        }
+
+        std::cout << "Camera IP " << camera_ip
+                  << " was not found in discovery results, falling back to direct SDK connect."
+                  << std::endl;
+        status = camera.connect(camera_ip);
+        if (!status.isOK()) {
+            showError(status);
+            return false;
+        }
+        std::cout << "Successfully connected to the camera." << std::endl;
+        return true;
+    }
+
+    if (device_info_list.empty()) {
+        std::cout << "No cameras are available." << std::endl;
+        return false;
+    }
+
+    if (!isatty(fileno(stdin))) {
+        std::cout << "No interactive terminal detected, connecting to the first discovered camera."
+                  << std::endl;
+        printCameraInfo(device_info_list.front());
+        status = camera.connect(device_info_list.front());
+        if (!status.isOK()) {
+            showError(status);
+            return false;
+        }
+        std::cout << "Successfully connected to the camera." << std::endl;
+        return true;
+    }
+
+    return findAndConnect(camera);
+}
+
 } // namespace
 
 MechMindCamera::MechMindCamera()
@@ -105,25 +161,9 @@ MechMindCamera::MechMindCamera()
     pub_camera_info =
         node->create_publisher<sensor_msgs::msg::CameraInfo>("/mechmind/camera_info", 1);
 
-    if (!findAndConnect(camera))
+    if (!connectCamera(camera, camera_ip))
         throw mmind::eye::ErrorStatus{mmind::eye::ErrorStatus::MMIND_STATUS_INVALID_DEVICE,
                                       "Camera not found."};
-
-    // Uncomment the following lines and comment the above if function to connect to a specific
-    // camera by its IP address. The IP address is set in the "start_camera.launch" file as the
-    // value of the "camera_ip" argument.
-
-    // mmind::eye::ErrorStatus status;
-    // mmind::eye::CameraInfo info;
-    // info.firmwareVersion = mmind::eye::Version("2.3.4");
-    // info.ipAddress = camera_ip;
-    // info.port = 5577;
-    // status = camera.connect(info);
-    // if (!status.isOK())
-    // {
-    //     throw status;
-    // }
-    // std::cout << "Connected to the camera successfully." << std::endl;
 
     mmind::eye::CameraInfo cameraInfo;
     showError(camera.getCameraInfo(cameraInfo));

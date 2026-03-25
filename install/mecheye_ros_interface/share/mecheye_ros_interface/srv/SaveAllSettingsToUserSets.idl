@@ -1,0 +1,17 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mecheye_ros_interface/srv/SaveAllSettingsToUserSets.srv
+// generated code does not contain a copyright notice
+
+
+module mecheye_ros_interface {
+  module srv {
+    struct SaveAllSettingsToUserSets_Request {
+      uint8 structure_needs_at_least_one_member;
+    };
+    struct SaveAllSettingsToUserSets_Response {
+      int32 error_code;
+
+      string error_description;
+    };
+  };
+};

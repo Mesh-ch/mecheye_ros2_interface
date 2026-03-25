@@ -1,0 +1,15 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mecheye_ros_interface/srv/GetFloatParameter.srv
+// generated code does not contain a copyright notice
+
+
+module mecheye_ros_interface {
+  module srv {
+    struct GetFloatParameter_Request {
+      string name;
+    };
+    struct GetFloatParameter_Response {
+      double value;
+    };
+  };
+};

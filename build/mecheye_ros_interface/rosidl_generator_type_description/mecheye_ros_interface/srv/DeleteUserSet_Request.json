@@ -1,0 +1,26 @@
+{
+  "type_description_msg": {
+    "type_description": {
+      "type_name": "mecheye_ros_interface/srv/DeleteUserSet_Request",
+      "fields": [
+        {
+          "name": "value",
+          "type": {
+            "type_id": 17,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
+        }
+      ]
+    },
+    "referenced_type_descriptions": []
+  },
+  "type_hashes": [
+    {
+      "type_name": "mecheye_ros_interface/srv/DeleteUserSet_Request",
+      "hash_string": "RIHS01_18e36520e8de21c4030000362a73195ffc17792ad488277fbb155a4a415163fa"
+    }
+  ]
+}

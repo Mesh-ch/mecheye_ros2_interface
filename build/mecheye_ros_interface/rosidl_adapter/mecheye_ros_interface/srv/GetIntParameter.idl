@@ -1,0 +1,15 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mecheye_ros_interface/srv/GetIntParameter.srv
+// generated code does not contain a copyright notice
+
+
+module mecheye_ros_interface {
+  module srv {
+    struct GetIntParameter_Request {
+      string name;
+    };
+    struct GetIntParameter_Response {
+      int32 value;
+    };
+  };
+};

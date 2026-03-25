@@ -1,0 +1,17 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mecheye_ros_interface/srv/DeleteUserSet.srv
+// generated code does not contain a copyright notice
+
+
+module mecheye_ros_interface {
+  module srv {
+    struct DeleteUserSet_Request {
+      string value;
+    };
+    struct DeleteUserSet_Response {
+      int32 error_code;
+
+      string error_description;
+    };
+  };
+};

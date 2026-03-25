@@ -1,0 +1,15 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mecheye_ros_interface/srv/GetEnumParameter.srv
+// generated code does not contain a copyright notice
+
+
+module mecheye_ros_interface {
+  module srv {
+    struct GetEnumParameter_Request {
+      string name;
+    };
+    struct GetEnumParameter_Response {
+      string value;
+    };
+  };
+};

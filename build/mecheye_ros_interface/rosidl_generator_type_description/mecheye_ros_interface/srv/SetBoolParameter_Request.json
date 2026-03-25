@@ -1,0 +1,36 @@
+{
+  "type_description_msg": {
+    "type_description": {
+      "type_name": "mecheye_ros_interface/srv/SetBoolParameter_Request",
+      "fields": [
+        {
+          "name": "value",
+          "type": {
+            "type_id": 15,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
+        },
+        {
+          "name": "name",
+          "type": {
+            "type_id": 17,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
+        }
+      ]
+    },
+    "referenced_type_descriptions": []
+  },
+  "type_hashes": [
+    {
+      "type_name": "mecheye_ros_interface/srv/SetBoolParameter_Request",
+      "hash_string": "RIHS01_25c47300ededdb7a6f8caeac5822eca8e9998f8658a69e34df9a077b0bb569de"
+    }
+  ]
+}
