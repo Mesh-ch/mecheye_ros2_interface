@@ -77,26 +77,9 @@ void convertToROSMsg(const mmind::eye::PointCloud& pointCloud, sensor_msgs::msg:
 bool connectCamera(mmind::eye::Camera& camera, const std::string& camera_ip)
 {
     mmind::eye::ErrorStatus status;
-    std::vector<mmind::eye::CameraInfo> device_info_list = mmind::eye::Camera::discoverCameras();
 
     if (!camera_ip.empty()) {
         std::cout << "Connecting to camera at IP " << camera_ip << "..." << std::endl;
-
-        for (const auto& camera_info : device_info_list) {
-            if (camera_info.ipAddress == camera_ip) {
-                status = camera.connect(camera_info);
-                if (!status.isOK()) {
-                    showError(status);
-                    return false;
-                }
-                std::cout << "Successfully connected to the camera." << std::endl;
-                return true;
-            }
-        }
-
-        std::cout << "Camera IP " << camera_ip
-                  << " was not found in discovery results, falling back to direct SDK connect."
-                  << std::endl;
         status = camera.connect(camera_ip);
         if (!status.isOK()) {
             showError(status);
@@ -106,16 +89,23 @@ bool connectCamera(mmind::eye::Camera& camera, const std::string& camera_ip)
         return true;
     }
 
+    std::vector<mmind::eye::CameraInfo> device_info_list = mmind::eye::Camera::discoverCameras();
+
     if (device_info_list.empty()) {
         std::cout << "No cameras are available." << std::endl;
         return false;
     }
 
     if (!isatty(fileno(stdin))) {
+        const auto& camera_info = device_info_list.front();
         std::cout << "No interactive terminal detected, connecting to the first discovered camera."
                   << std::endl;
-        printCameraInfo(device_info_list.front());
-        status = camera.connect(device_info_list.front());
+        printCameraInfo(camera_info);
+        if (!camera_info.ipAddress.empty()) {
+            status = camera.connect(camera_info.ipAddress);
+        } else {
+            status = camera.connect(camera_info);
+        }
         if (!status.isOK()) {
             showError(status);
             return false;
