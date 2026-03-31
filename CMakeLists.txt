@@ -100,8 +100,13 @@ install(TARGETS start
 install(DIRECTORY include/
   DESTINATION include/${PROJECT_NAME}
 )
-install(FILES launch/start_camera.py
+install(FILES
+  launch/start_camera.py
+  launch/calibration_helper.py
   DESTINATION share/${PROJECT_NAME}/launch
+)
+install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
 )
 
 ament_export_dependencies(

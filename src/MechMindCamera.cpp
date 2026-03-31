@@ -130,6 +130,13 @@ MechMindCamera::MechMindCamera()
     node->declare_parameter<double>("fy", 0.0);
     node->declare_parameter<double>("u", 0.0);
     node->declare_parameter<double>("v", 0.0);
+    node->declare_parameter<std::string>("color_frame_id", color_frame_id);
+    node->declare_parameter<std::string>("left_color_frame_id", left_color_frame_id);
+    node->declare_parameter<std::string>("right_color_frame_id", right_color_frame_id);
+    node->declare_parameter<std::string>("depth_frame_id", depth_frame_id);
+    node->declare_parameter<std::string>("point_cloud_frame_id", point_cloud_frame_id);
+    node->declare_parameter<std::string>("textured_point_cloud_frame_id",
+                                         textured_point_cloud_frame_id);
 
     node->get_parameter("camera_ip", camera_ip);
     node->get_parameter("save_file", save_file);
@@ -138,6 +145,12 @@ MechMindCamera::MechMindCamera()
     node->get_parameter("fy", fy);
     node->get_parameter("u", u);
     node->get_parameter("v", v);
+    node->get_parameter("color_frame_id", color_frame_id);
+    node->get_parameter("left_color_frame_id", left_color_frame_id);
+    node->get_parameter("right_color_frame_id", right_color_frame_id);
+    node->get_parameter("depth_frame_id", depth_frame_id);
+    node->get_parameter("point_cloud_frame_id", point_cloud_frame_id);
+    node->get_parameter("textured_point_cloud_frame_id", textured_point_cloud_frame_id);
 
     pub_color = node->create_publisher<sensor_msgs::msg::Image>("/mechmind/color_image", 1);
     pub_color_left =
@@ -409,7 +422,7 @@ void MechMindCamera::publishColorMap(mmind::eye::Color2DImage& color2DImage)
     cv_image.encoding = sensor_msgs::image_encodings::BGR8;
     sensor_msgs::msg::Image ros_image;
     cv_image.toImageMsg(ros_image);
-    ros_image.header.frame_id = "mechmind_camera/color_map";
+    ros_image.header.frame_id = color_frame_id;
     ros_image.header.stamp = node->now();
     pub_color->publish(ros_image);
     publishColorCameraInfo(ros_image.header, color2DImage.width(), color2DImage.height());
@@ -430,7 +443,7 @@ void MechMindCamera::publishStereoColorMap(mmind::eye::Color2DImage& leftColor2D
     cv_image_left.encoding = sensor_msgs::image_encodings::BGR8;
     sensor_msgs::msg::Image ros_image_left;
     cv_image_left.toImageMsg(ros_image_left);
-    ros_image_left.header.frame_id = "mechmind_camera/left_color_map";
+    ros_image_left.header.frame_id = left_color_frame_id;
     ros_image_left.header.stamp = node->now();
     pub_color_left->publish(ros_image_left);
     publishDepthCameraInfo(ros_image_left.header, leftColor2DImage.width(),
@@ -443,7 +456,7 @@ void MechMindCamera::publishStereoColorMap(mmind::eye::Color2DImage& leftColor2D
     cv_image_right.encoding = sensor_msgs::image_encodings::BGR8;
     sensor_msgs::msg::Image ros_image_right;
     cv_image_right.toImageMsg(ros_image_right);
-    ros_image_right.header.frame_id = "mechmind_camera/right_color_map";
+    ros_image_right.header.frame_id = right_color_frame_id;
     ros_image_right.header.stamp = node->now();
     pub_color_right->publish(ros_image_right);
     publishColorCameraInfo(ros_image_right.header, rightColor2DImage.width(),
@@ -468,7 +481,7 @@ void MechMindCamera::publishDepthMap(mmind::eye::DepthMap& depthMap)
     cv_depth.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
     sensor_msgs::msg::Image ros_depth;
     cv_depth.toImageMsg(ros_depth);
-    ros_depth.header.frame_id = "mechmind_camera/depth_map";
+    ros_depth.header.frame_id = depth_frame_id;
     ros_depth.header.stamp = node->now();
     pub_depth->publish(ros_depth);
     publishDepthCameraInfo(ros_depth.header, depthMap.width(), depthMap.height());
@@ -485,7 +498,7 @@ void MechMindCamera::publishDepthMap(mmind::eye::DepthMap& depthMap)
 void MechMindCamera::publishPointCloud(mmind::eye::PointCloud& pointCloud)
 {
     sensor_msgs::msg::PointCloud2 ros_cloud;
-    ros_cloud.header.frame_id = "mechmind_camera/point_cloud";
+    ros_cloud.header.frame_id = point_cloud_frame_id;
     ros_cloud.header.stamp = node->now();
     convertToROSMsg(pointCloud, ros_cloud);
     pub_pcl->publish(ros_cloud);
@@ -495,7 +508,7 @@ void MechMindCamera::publishPointCloud(mmind::eye::PointCloud& pointCloud)
 void MechMindCamera::publishColorPointCloud(mmind::eye::TexturedPointCloud& texturedPointCloud)
 {
     sensor_msgs::msg::PointCloud2 ros_color_cloud;
-    ros_color_cloud.header.frame_id = "mechmind_camera/textured_point_cloud";
+    ros_color_cloud.header.frame_id = textured_point_cloud_frame_id;
     ros_color_cloud.header.stamp = node->now();
     convertToROSMsg(texturedPointCloud, ros_color_cloud);
     pub_pcl_color->publish(ros_color_cloud);

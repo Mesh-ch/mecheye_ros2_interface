@@ -53,6 +53,12 @@ private:
     double fy = 0;
     double u = 0;
     double v = 0;
+    std::string color_frame_id = "mechmind_camera/color_map";
+    std::string left_color_frame_id = "mechmind_camera/left_color_map";
+    std::string right_color_frame_id = "mechmind_camera/right_color_map";
+    std::string depth_frame_id = "mechmind_camera/depth_map";
+    std::string point_cloud_frame_id = "mechmind_camera/point_cloud";
+    std::string textured_point_cloud_frame_id = "mechmind_camera/textured_point_cloud";
 
     rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_color;
     rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_color_left;
