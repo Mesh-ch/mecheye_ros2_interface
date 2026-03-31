@@ -1,12 +1,11 @@
 camera_frame: mechmind_camera_link
 camera_optical_frame: mechmind_camera_optical_frame
 
-# External calibration in Mech-Vision style axis-angle format.
-# This currently publishes camera -> tool_base, matching the direction you asked for.
-# The camera frame above must appear here as either frame_id or child_frame_id.
+# Inverted from /home/inauenma/git/mecheye_ros2_interface/config/mecheye_calibration_31_03_2026.yaml
+# so the robot owns tool_base and the camera hangs under it in the TF tree.
 external_calibration:
-  frame_id: mechmind_camera_link
-  child_frame_id: tool_base
+  frame_id: tool0
+  child_frame_id: mechmind_camera_link
   translation:
     x: -0.0519304
     y: 0.60182
@@ -17,12 +16,10 @@ external_calibration:
     z: 0.999156
   rotation_angle_deg: 97.9353
 
-# Fixed transform between the mechanical camera frame and the frame used in the
-# image, depth, and point cloud message headers.
 camera_optical_transform:
   x: 0.0
   y: 0.0
   z: 0.0
-  roll: -1.57079632679
+  roll: 0.0
   pitch: 0.0
-  yaw: -1.57079632679
+  yaw: 0.0
