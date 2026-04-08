@@ -102,7 +102,6 @@ install(DIRECTORY include/
 )
 install(FILES
   launch/start_camera.py
-  launch/calibration_helper.py
   DESTINATION share/${PROJECT_NAME}/launch
 )
 install(DIRECTORY config

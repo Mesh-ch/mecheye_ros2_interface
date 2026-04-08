@@ -1,0 +1,25 @@
+camera_frame: mechmind_camera_link
+camera_optical_frame: mechmind_camera_optical_frame
+
+# Inverted from /home/inauenma/git/mecheye_ros2_interface/config/mecheye_calibration_31_03_2026.yaml
+# so the robot owns tool_base and the camera hangs under it in the TF tree.§
+external_calibration:
+  frame_id: rob1_tool0
+  child_frame_id: mechmind_camera_link
+  translation:
+    x: -0.0279527
+    y: 0.7242249
+    z: 0.405747
+  rotation_axis:
+    x: -0.00154649
+    y: -0.00149874
+    z: 0.999998
+  rotation_angle_deg: 96.625
+
+camera_optical_transform:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+  roll: 0.0
+  pitch: 0.0
+  yaw: 0.0
