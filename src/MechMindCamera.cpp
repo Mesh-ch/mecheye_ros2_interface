@@ -208,6 +208,11 @@ MechMindCamera::MechMindCamera()
             "capture_point_cloud", std::bind(&MechMindCamera::capture_point_cloud_callback, this,
                                              std::placeholders::_1, std::placeholders::_2));
 
+    capture_all_service =
+        node->create_service<mecheye_ros_interface::srv::CaptureAll>(
+            "capture_all", std::bind(&MechMindCamera::capture_all_callback, this,
+                                     std::placeholders::_1, std::placeholders::_2));
+
     add_user_set_service = node->create_service<mecheye_ros_interface::srv::AddUserSet>(
         "add_user_set", std::bind(&MechMindCamera::add_user_set_callback, this,
                                   std::placeholders::_1, std::placeholders::_2));
@@ -570,6 +575,37 @@ void MechMindCamera::capture_point_cloud_callback(
     publishPointCloud(pointCloud);
     if (save_file) {
         frame.saveUntexturedPointCloud(mmind::eye::FileFormat::PLY, "/tmp/point_cloud.ply");
+        std::cout << "The point cloud is saved to /tmp." << std::endl;
+    }
+}
+
+void MechMindCamera::capture_all_callback(
+    const std::shared_ptr<mecheye_ros_interface::srv::CaptureAll::Request> req,
+    std::shared_ptr<mecheye_ros_interface::srv::CaptureAll::Response> res)
+{
+    // Single capture2DAnd3D call to get 2D + 3D from the same frame
+    mmind::eye::Frame2DAnd3D frame2DAnd3D;
+    auto status = camera.capture2DAnd3D(frame2DAnd3D);
+    showError(status);
+    res->error_code = status.errorCode;
+    res->error_description = status.errorDescription.c_str();
+    if (status.errorCode != 0) return;
+
+    // Publish point cloud
+    mmind::eye::Frame3D frame3D = frame2DAnd3D.frame3D();
+    auto pointCloud = frame3D.getUntexturedPointCloud();
+    publishPointCloud(pointCloud);
+
+    // Publish depth map
+    auto depthMap = frame3D.getDepthMap();
+    publishDepthMap(depthMap);
+
+    // Publish grayscale image (convert color to grayscale)
+    mmind::eye::Color2DImage colorMap = frame2DAnd3D.frame2D().getColorImage();
+    publishColorMap(colorMap);
+
+    if (save_file) {
+        frame3D.saveUntexturedPointCloud(mmind::eye::FileFormat::PLY, "/tmp/point_cloud.ply");
         std::cout << "The point cloud is saved to /tmp." << std::endl;
     }
 }

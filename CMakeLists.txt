@@ -30,6 +30,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/CaptureTexturedPointCloud.srv"
   "srv/CaptureDepthMap.srv"
   "srv/CapturePointCloud.srv"
+  "srv/CaptureAll.srv"
 
   "srv/DeleteUserSet.srv"
   "srv/DeviceInfo.srv"

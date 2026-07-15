@@ -14,6 +14,7 @@
 #include <mecheye_ros_interface/srv/capture_textured_point_cloud.hpp>
 #include <mecheye_ros_interface/srv/capture_depth_map.hpp>
 #include <mecheye_ros_interface/srv/capture_point_cloud.hpp>
+#include <mecheye_ros_interface/srv/capture_all.hpp>
 #include <mecheye_ros_interface/srv/delete_user_set.hpp>
 #include <mecheye_ros_interface/srv/device_info.hpp>
 #include <mecheye_ros_interface/srv/add_user_set.hpp>
@@ -88,6 +89,8 @@ private:
         capture_depth_map_service;
     rclcpp::Service<mecheye_ros_interface::srv::CapturePointCloud>::SharedPtr
         capture_point_cloud_service;
+    rclcpp::Service<mecheye_ros_interface::srv::CaptureAll>::SharedPtr
+        capture_all_service;
 
     rclcpp::Service<mecheye_ros_interface::srv::DeleteUserSet>::SharedPtr delete_user_set_service;
     rclcpp::Service<mecheye_ros_interface::srv::DeviceInfo>::SharedPtr device_info_service;
@@ -142,6 +145,10 @@ private:
     void capture_point_cloud_callback(
         const std::shared_ptr<mecheye_ros_interface::srv::CapturePointCloud::Request> req,
         std::shared_ptr<mecheye_ros_interface::srv::CapturePointCloud::Response> res);
+
+    void capture_all_callback(
+        const std::shared_ptr<mecheye_ros_interface::srv::CaptureAll::Request> req,
+        std::shared_ptr<mecheye_ros_interface::srv::CaptureAll::Response> res);
 
     void capture_stereo_color_images_callback(
         const std::shared_ptr<mecheye_ros_interface::srv::CaptureStereoColorImages::Request> req,

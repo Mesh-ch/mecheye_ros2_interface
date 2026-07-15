@@ -95,8 +95,8 @@ sudo apt install python3-colcon-common-extensions
      `config/mecheye_calibration_31_03_2026.yaml` and pass that file to the launch file so the
      camera is inserted into the TF tree at startup. A template file is included in this repository.
      Update the frame IDs and pose values in that YAML before starting the driver. The launch file
-     accepts either `roll`/`pitch`/`yaw` directly or Mech-Vision style `rotation_axis` plus
-     `rotation_angle_deg`:
+     accepts a `rotation` quaternion (preferred), `roll`/`pitch`/`yaw` directly, or legacy
+     Mech-Vision style `rotation_axis` plus `rotation_angle_deg`:
 
      ```bash
      source ~/colcon_ws/install/setup.bash

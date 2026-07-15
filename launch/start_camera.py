@@ -55,24 +55,41 @@ def load_calibration(calibration_file):
 
 
 def transform_arguments(transform, frame_id, child_frame_id):
-    return [
+    args = [
         "--x",
         str(transform["x"]),
         "--y",
         str(transform["y"]),
         "--z",
         str(transform["z"]),
-        "--roll",
-        str(transform["roll"]),
-        "--pitch",
-        str(transform["pitch"]),
-        "--yaw",
-        str(transform["yaw"]),
+    ]
+    if "qw" in transform:
+        args += [
+            "--qx",
+            str(transform["qx"]),
+            "--qy",
+            str(transform["qy"]),
+            "--qz",
+            str(transform["qz"]),
+            "--qw",
+            str(transform["qw"]),
+        ]
+    else:
+        args += [
+            "--roll",
+            str(transform["roll"]),
+            "--pitch",
+            str(transform["pitch"]),
+            "--yaw",
+            str(transform["yaw"]),
+        ]
+    args += [
         "--frame-id",
         frame_id,
         "--child-frame-id",
         child_frame_id,
     ]
+    return args
 
 
 def _parse_transform(
@@ -88,6 +105,20 @@ def _parse_transform(
     x = translation.get("x", transform_config.get("x", 0.0))
     y = translation.get("y", transform_config.get("y", 0.0))
     z = translation.get("z", transform_config.get("z", 0.0))
+
+    rotation = transform_config.get("rotation", transform_config.get("rotation_quaternion"))
+    if rotation and {"w", "x", "y", "z"} <= rotation.keys():
+        return {
+            "frame_id": transform_config.get("frame_id", default_frame_id),
+            "child_frame_id": transform_config.get("child_frame_id", default_child_frame_id),
+            "x": x,
+            "y": y,
+            "z": z,
+            "qx": rotation["x"],
+            "qy": rotation["y"],
+            "qz": rotation["z"],
+            "qw": rotation["w"],
+        }
 
     if {"roll", "pitch", "yaw"} <= transform_config.keys():
         roll = transform_config["roll"]
