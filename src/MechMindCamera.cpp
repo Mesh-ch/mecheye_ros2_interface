@@ -1,6 +1,9 @@
 #include <MechMindCamera.h>
 
+#include <chrono>
 #include <cstdio>
+#include <ctime>
+#include <filesystem>
 #include <sstream>
 #include <unistd.h>
 
@@ -125,6 +128,7 @@ MechMindCamera::MechMindCamera()
 
     node->declare_parameter<std::string>("camera_ip", "");
     node->declare_parameter<bool>("save_file", false);
+    node->declare_parameter<std::string>("save_dir", "");
     node->declare_parameter<bool>("use_external_intri", false);
     node->declare_parameter<double>("fx", 0.0);
     node->declare_parameter<double>("fy", 0.0);
@@ -140,6 +144,7 @@ MechMindCamera::MechMindCamera()
 
     node->get_parameter("camera_ip", camera_ip);
     node->get_parameter("save_file", save_file);
+    node->get_parameter("save_dir", save_dir);
     node->get_parameter("use_external_intri", use_external_intri);
     node->get_parameter("fx", fx);
     node->get_parameter("fy", fy);
@@ -562,6 +567,49 @@ void MechMindCamera::capture_depth_map_callback(
     publishDepthMap(depthMap);
 }
 
+std::string MechMindCamera::captureStem()
+{
+    if (save_dir.empty())
+        return "";
+    std::error_code ec;
+    std::filesystem::create_directories(save_dir, ec);
+    if (ec) {
+        std::cerr << "Cannot create save_dir '" << save_dir << "': " << ec.message() << std::endl;
+        return "";
+    }
+    const auto now = std::chrono::system_clock::now();
+    const auto ms =
+        std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count() %
+        1000;
+    const std::time_t t = std::chrono::system_clock::to_time_t(now);
+    std::tm tm{};
+    localtime_r(&t, &tm);
+    char buf[32];
+    std::strftime(buf, sizeof(buf), "%Y%m%d_%H%M%S", &tm);
+    char stamp[48];
+    std::snprintf(stamp, sizeof(stamp), "%s_%03d", buf, static_cast<int>(ms));
+    return (std::filesystem::path(save_dir) / stamp).string();
+}
+
+void MechMindCamera::saveCapture(const std::string& stem, mmind::eye::Frame3D& frame3D,
+                                 mmind::eye::Color2DImage* color2DImage)
+{
+    if (stem.empty())
+        return;
+    const auto status =
+        frame3D.saveUntexturedPointCloud(mmind::eye::FileFormat::PLY, stem + "_point_cloud.ply");
+    showError(status);
+    if (color2DImage != nullptr) {
+        cv::Mat color =
+            cv::Mat(color2DImage->height(), color2DImage->width(), CV_8UC3, color2DImage->data());
+        cv::imwrite(stem + "_color.png", color);
+        auto depthMap = frame3D.getDepthMap();
+        cv::Mat depth = cv::Mat(depthMap.height(), depthMap.width(), CV_32FC1, depthMap.data());
+        cv::imwrite(stem + "_depth.tiff", depth);
+    }
+    std::cout << "Capture saved to " << stem << "_*" << std::endl;
+}
+
 void MechMindCamera::capture_point_cloud_callback(
     const std::shared_ptr<mecheye_ros_interface::srv::CapturePointCloud::Request> req,
     std::shared_ptr<mecheye_ros_interface::srv::CapturePointCloud::Response> res)
@@ -573,6 +621,7 @@ void MechMindCamera::capture_point_cloud_callback(
     res->error_description = status.errorDescription.c_str();
     auto pointCloud = frame.getUntexturedPointCloud();
     publishPointCloud(pointCloud);
+    saveCapture(captureStem(), frame, nullptr);
     if (save_file) {
         frame.saveUntexturedPointCloud(mmind::eye::FileFormat::PLY, "/tmp/point_cloud.ply");
         std::cout << "The point cloud is saved to /tmp." << std::endl;
@@ -603,6 +652,8 @@ void MechMindCamera::capture_all_callback(
     // Publish grayscale image (convert color to grayscale)
     mmind::eye::Color2DImage colorMap = frame2DAnd3D.frame2D().getColorImage();
     publishColorMap(colorMap);
+
+    saveCapture(captureStem(), frame3D, &colorMap);
 
     if (save_file) {
         frame3D.saveUntexturedPointCloud(mmind::eye::FileFormat::PLY, "/tmp/point_cloud.ply");

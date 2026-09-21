@@ -201,6 +201,7 @@ def _axis_angle_to_rpy(axis_x, axis_y, axis_z, angle):
 def _launch_setup(context, *args, **kwargs):
     calibration = load_calibration(LaunchConfiguration("calibration_file").perform(context))
     camera_ip = LaunchConfiguration("camera_ip").perform(context)
+    save_dir = LaunchConfiguration("save_dir").perform(context)
 
     return [
         Node(
@@ -228,6 +229,7 @@ def _launch_setup(context, *args, **kwargs):
             output="screen",
             parameters=[
                 {"save_file": True},
+                {"save_dir": save_dir},
                 {"camera_ip": camera_ip},
                 {"use_external_intri": False},
                 {"fx": 1727.4641025602748},
@@ -255,6 +257,12 @@ def generate_launch_description():
                 "calibration_file",
                 default_value=str(DEFAULT_CALIBRATION_FILE),
                 description="YAML file that defines the external calibration TFs",
+            ),
+            DeclareLaunchArgument(
+                "save_dir",
+                default_value="",
+                description="If set, every capture is also saved here, timestamped: "
+                "<stamp>_point_cloud.ply, and with capture_all also _color.png and _depth.tiff",
             ),
             OpaqueFunction(function=_launch_setup),
         ]

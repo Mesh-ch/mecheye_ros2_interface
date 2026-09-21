@@ -518,3 +518,12 @@ Example: Set the value of the `Scan2DHDRExposureSequence` parameter to [30.0, 35
   ```bash
   ros2 service call /set_float_array_parameter mecheye_ros_interface/srv/SetFloatArrayParameter "{name: Scan2DHDRExposureSequence, array: [30.0,35.5,40.0]}"
   ```
+
+### Saving every capture
+
+Launch with `save_dir:=/some/dir` (`ros2 launch .../start_camera.py save_dir:=/some/dir`) and every
+`capture_point_cloud` / `capture_all` call also writes timestamped files there, instead of
+overwriting `/tmp/point_cloud.ply`:
+
+* `<stamp>_point_cloud.ply` (both services)
+* `<stamp>_color.png` and `<stamp>_depth.tiff` (`capture_all`, from the same frame)

@@ -49,6 +49,7 @@ private:
 
     std::string camera_ip;
     bool save_file = false;
+    std::string save_dir;
     bool use_external_intri = false;
     double fx = 0;
     double fy = 0;
@@ -70,6 +71,9 @@ private:
     rclcpp::Publisher<sensor_msgs::msg::CameraInfo>::SharedPtr pub_camera_info;
 
     void publishColorMap(mmind::eye::Color2DImage& color2DImage);
+    std::string captureStem();
+    void saveCapture(const std::string& stem, mmind::eye::Frame3D& frame3D,
+                     mmind::eye::Color2DImage* color2DImage);
     void publishStereoColorMap(mmind::eye::Color2DImage& leftColor2DImage,
                                mmind::eye::Color2DImage& rightColor2DImage);
     void publishDepthMap(mmind::eye::DepthMap& depthMap);
